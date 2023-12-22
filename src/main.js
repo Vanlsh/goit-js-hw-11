@@ -73,33 +73,28 @@ const handleSearchSubmit = event => {
   const searchText = event.target.elements.search.value.trim();
   event.target.elements.search.value = '';
 
-  if (searchText.length) {
-    loadedPage = 1;
-    galleryList.innerHTML = '';
-    loader.classList.remove('hidden');
-    showMoreButton.classList.add('hidden');
+  showMoreButton.classList.add('hidden');
+  loader.classList.remove('hidden');
+  galleryList.innerHTML = '';
+  loadedPage = 1;
 
-    fetchPhoto(searchText, loadedPage)
-      .then(response => {
-        const photos = response.hits;
-        if (photos.length) {
-          addPhotos(photos);
-          showMoreButton.classList.remove('hidden');
-          loadedPage++;
-          searchQuery = searchText;
-        } else {
-          iziToast.show(alertError);
-        }
-      })
-      .catch(error => iziToast.show({ ...alertError, message: error }))
-      .finally(() => loader.classList.add('hidden'));
-  } else {
-    iziToast.show({ ...alertError, message: 'The value can not be empty' });
-  }
+  fetchPhoto(searchText, loadedPage)
+    .then(response => {
+      const photos = response.hits;
+      if (photos.length) {
+        addPhotos(photos);
+        showMoreButton.classList.remove('hidden');
+        loadedPage++;
+        searchQuery = searchText;
+      } else {
+        iziToast.show(alertError);
+      }
+    })
+    .catch(error => iziToast.show({ ...alertError, message: error }))
+    .finally(() => loader.classList.add('hidden'));
 };
 
-findPhotoForm.addEventListener('submit', handleSearchSubmit);
-showMoreButton.addEventListener('click', () => {
+const handleSearchMore = () => {
   loader.classList.remove('hidden');
   showMoreButton.classList.add('hidden');
 
@@ -113,4 +108,7 @@ showMoreButton.addEventListener('click', () => {
       loader.classList.add('hidden');
       showMoreButton.classList.remove('hidden');
     });
-});
+};
+
+findPhotoForm.addEventListener('submit', handleSearchSubmit);
+showMoreButton.addEventListener('click', handleSearchMore);
