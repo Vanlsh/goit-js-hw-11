@@ -77,6 +77,7 @@ const handleSearchSubmit = event => {
     loadedPage = 1;
     galleryList.innerHTML = '';
     loader.classList.remove('hidden');
+    showMoreButton.classList.add('hidden');
 
     fetchPhoto(searchText, loadedPage)
       .then(response => {
